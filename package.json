@@ -38,7 +38,20 @@
   "files": [
     "index.js"
   ],
-  "keywords": [],
+  "keywords": [
+    "baseplugin",
+    "better",
+    "better-use",
+    "dush",
+    "dushplugin",
+    "error",
+    "error-handling",
+    "handling",
+    "minibaseplugin",
+    "plugin",
+    "plugins",
+    "use"
+  ],
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
