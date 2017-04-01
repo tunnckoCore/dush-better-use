@@ -44,6 +44,13 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
+  "nyc": {
+    "check-coverage": true,
+    "statements": 100,
+    "functions": 100,
+    "branches": 100,
+    "lines": 100
+  },
   "verb": {
     "run": true,
     "toc": {
@@ -56,11 +63,19 @@
       "readme"
     ],
     "related": {
-      "list": [],
+      "list": [
+        "dush",
+        "dush-promise",
+        "dush-methods",
+        "minibase-is-registered",
+        "minibase-create-plugin",
+        "dush-options",
+        "dush-no-chaining",
+        "dush-tap-report",
+        "dush-router",
+        "minibase-visit"
+      ],
       "highlight": "dush"
-    },
-    "lint": {
-      "reflinks": true
     },
     "reflinks": [
       "base",
@@ -72,13 +87,9 @@
       "standard-version",
       "verb",
       "verb-generate-readme"
-    ]
-  },
-  "nyc": {
-    "check-coverage": true,
-    "statements": 100,
-    "functions": 100,
-    "branches": 100,
-    "lines": 100
+    ],
+    "lint": {
+      "reflinks": true
+    }
   }
 }
