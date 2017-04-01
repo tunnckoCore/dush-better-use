@@ -61,7 +61,18 @@
     },
     "lint": {
       "reflinks": true
-    }
+    },
+    "reflinks": [
+      "base",
+      "charlike",
+      "commitizen",
+      "dush",
+      "minibase",
+      "minibase-is-registered",
+      "standard-version",
+      "verb",
+      "verb-generate-readme"
+    ]
   },
   "nyc": {
     "check-coverage": true,
