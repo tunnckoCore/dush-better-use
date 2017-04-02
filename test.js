@@ -43,9 +43,12 @@ test('should `.use(namedFn)` add named plugin if non-anonymous fn', function (do
 
 test('should anonymous plugins not be registered at `app.registered` store', function (done) {
   var app = dush().use(betterUse())
-  app.use(function () {
+  app.once('error', done)
+
+  app.use(function (app, options) {
+    test.strictEqual(options.foo, 'bar')
     app.foo = 123
-  })
+  }, { foo: 'bar' })
   app.use(function () {
     app.bar = 555
   })
@@ -63,21 +66,31 @@ test('should emit `error` event if plugin fail', function (done) {
     test.strictEqual(err._pluginName, 'xyzPlugin')
     done()
   })
-  app.use(function xyzPlugin () {
+  app.use(function xyzPlugin (app) {
     throw new Error('foo bar')
   })
+})
+
+test('should emit `error` event if .use not have at least on argument function', function (done) {
+  app.once('error', function (err) {
+    test.strictEqual(/expect at least one argument function/.test(err.message), true)
+    done()
+  })
+  app.use(123)
 })
 
 test('should register/call/invoke named plugins only once', function (done) {
   var app = dush().use(betterUse())
   var called = 0
 
-  function plugin (app) {
+  function plugin (app, options) {
+    test.strictEqual(options.bar, 'qux')
     app.xx = 1
     called++
   }
 
-  app.use('somePlugin', plugin)
+  app.on('error', done)
+  app.use('somePlugin', plugin, { bar: 'qux' })
   app.use('somePlugin', plugin)
   app.use('somePlugin', plugin)
 
@@ -85,4 +98,12 @@ test('should register/call/invoke named plugins only once', function (done) {
   test.strictEqual(app.xx, 1)
   test.strictEqual(app.registered.somePlugin, true)
   done()
+})
+
+test('should always pass options object to plugin, empty object if not passed', function (done) {
+  app.use(function (app, options) {
+    test.strictEqual(typeof options, 'object')
+    test.strictEqual(Object.keys(options).length, 0)
+    done()
+  })
 })

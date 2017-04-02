@@ -91,7 +91,7 @@ const dushBetterUse = require('dush-better-use')
 
 ## API
 
-### [betterUse](index.js#L36)
+### [betterUse](index.js#L37)
 > Overrides the default [dush][]/[minibase][]/[base][] `.use` method to support named plugins and to have better error handling. It also adds/registers the [minibase-is-registered][] plugin if not included already, so you will have `.isRegistered` method too. This plugin emits `error` event if something fail in plugin, instead of throwing.
 
 **Params**
@@ -109,13 +109,14 @@ var app = dush()
 app.use(betterUse())
 ```
 
-### [.use](index.js#L87)
+### [.use](index.js#L89)
 > Calls `fn` plugin immediately once, if `name` is string it registers it as "named" plugin so you can find its name at `app.registered` cache. It also emits `error` event if plugin `fn` throws.
 
 **Params**
 
-* `name` **{Function|String}**: name of the plugin or `fn` plugin function    
-* `fn` **{Function}**: a plugin function, called immedately    
+* `name` **{String|Function}**: name of the plugin or `fn` plugin function    
+* `fn` **{Function|Object}**: a plugin function, called immedately; or `options` object    
+* `options` **{Object}**: direclty passed as 2nd argument to `fn`    
 * `returns` **{Object}**: self "app" for chaining  
 
 **Example**

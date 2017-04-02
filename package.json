@@ -21,13 +21,14 @@
   },
   "dependencies": {
     "get-fn-name": "^1.0.0",
+    "isobject": "^3.0.0",
     "minibase-is-registered": "^1.1.5",
     "try-catch-callback": "^2.0.2"
   },
   "devDependencies": {
     "commitizen": "~2.7.0",
     "cz-conventional-changelog": "1.1.5",
-    "dush": "^3.0.2",
+    "dush": "^3.0.4",
     "mukla": "^0.4.9",
     "npm-run-all": "~3.1.2",
     "nyc": "^10.2.0",

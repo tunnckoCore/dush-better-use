@@ -8,6 +8,7 @@
 'use strict'
 
 var getName = require('get-fn-name')
+var isObject = require('isobject')
 var tryCatch = require('try-catch-callback')
 var isRegistered = require('minibase-is-registered')
 
@@ -78,23 +79,34 @@ module.exports = function betterUse (opts) {
      * })
      * ```
      *
-     * @param  {Function|String}   `name` name of the plugin or `fn` plugin function
-     * @param  {Function} `fn` a plugin function, called immedately
+     * @param  {String|Function}   `name` name of the plugin or `fn` plugin function
+     * @param  {Function|Object} `fn` a plugin function, called immedately; or `options` object
+     * @param  {Object} `options` direclty passed as 2nd argument to `fn`
      * @return {Object} self "app" for chaining
      * @api public
      */
 
-    app.use = function use (name, fn) {
+    app.use = function use (name, fn, options) {
+      if (isObject(fn)) {
+        options = fn
+        fn = name
+        name = null
+      }
       if (typeof name === 'function') {
         fn = name
         name = getName(fn)
+      }
+      if (typeof fn !== 'function') {
+        app.emit('error', new TypeError('.use: expect at least one argument function'))
+        return app
       }
       if (typeof name === 'string') {
         fn = handleNamedPlugin(oldUse)(name, fn)
         fn._pluginName = name
       }
+      options = isObject(options) ? options : {}
 
-      handleAnonymousPlugin(app, oldUse, fn)
+      handleAnonymousPlugin(app, oldUse, [fn, options])
       return app
     }
 
@@ -106,23 +118,23 @@ module.exports = function betterUse (opts) {
  * Utils
  */
 
-function handleAnonymousPlugin (app, func, fn) {
-  var ret = tryCatch(func, { args: fn, return: true })
+function handleAnonymousPlugin (app, func, args) {
+  var ret = tryCatch(func, { args: args, return: true })
 
   if (ret instanceof Error) {
-    ret._pluginName = fn._pluginName
+    ret._pluginName = args[0]._pluginName
     app.emit('error', ret)
   }
 }
 
 function handleNamedPlugin (oldUse) {
   return function __createdPlugin__ (name, fn) {
-    return function createdPlugin (app) {
+    return function createdPlugin (app, options) {
       if (app.isRegistered(name)) {
         return
       }
 
-      oldUse(fn)
+      oldUse(fn, options)
       return app
     }
   }
