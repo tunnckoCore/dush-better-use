@@ -1,6 +1,6 @@
 {
   "name": "dush-better-use",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Adds support for named plugins and better error handling, by overriding the default `.use` method",
   "repository": "tunnckoCore/dush-better-use",
   "author": "Charlike Mike Reagent <@tunnckoCore> (https://i.am.charlike.online)",

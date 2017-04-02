@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/tunnckocore/dush-better-use/compare/v1.0.0...v1.1.0) (2017-04-02)
+
+
+### Features
+
+* **options:** allow passing options object as third/second argument ([9a1f013](https://github.com/tunnckocore/dush-better-use/commit/9a1f013)), closes [#2](https://github.com/tunnckocore/dush-better-use/issues/2)
+
+
+
 <a name="1.0.0"></a>
 # 1.0.0 (2017-04-02)
 
