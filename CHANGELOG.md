@@ -1,3 +1,27 @@
+# Change Log
+
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+<a name="1.0.0"></a>
+# 1.0.0 (2017-04-02)
+
+
+### Bug Fixes
+
+* **package:** add keywords ([dc061ba](https://github.com/tunnckocore/dush-better-use/commit/dc061ba))
+
+
+### Chores
+
+* **init:** init ([abf87cd](https://github.com/tunnckocore/dush-better-use/commit/abf87cd))
+
+
+### BREAKING CHANGES
+
+* init: First release
+
+
+
 
 
 ## 0.0.0 - 2017-04-01
