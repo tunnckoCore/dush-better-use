@@ -103,7 +103,6 @@ test('should register/call/invoke named plugins only once', function (done) {
 
 test('should always pass options object to plugin, empty object if not passed', function (done) {
   app.use(function (app, options) {
-    test.strictEqual(this, null)
     test.strictEqual(typeof options, 'object')
     test.strictEqual(Object.keys(options).length, 0)
     done()
@@ -116,8 +115,16 @@ test('should work for Base apps', function (done) {
   base.on('error', done)
   base.use(betterUse())
 
+  base.use('hihi', function (app) {
+    app.hihi = 1
+  })
   base.use(function (app, base, options) {
     test.deepEqual(options, { foo: 'bar' })
-    done()
+    app.hell = 2
   }, { foo: 'bar' })
+
+  test.strictEqual(base.hihi, 1)
+  test.strictEqual(base.hell, 2)
+  test.strictEqual(base.registered.hihi, true)
+  done()
 })
