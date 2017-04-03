@@ -13,6 +13,7 @@ var dush = require('dush')
 var test = require('mukla')
 var betterUse = require('./index')
 
+var Base = require('base')
 var app = dush().use(betterUse())
 
 test('should `.use(name, fn)` add named plugin', function (done) {
@@ -49,7 +50,7 @@ test('should anonymous plugins not be registered at `app.registered` store', fun
     test.strictEqual(options.foo, 'bar')
     app.foo = 123
   }, { foo: 'bar' })
-  app.use(function () {
+  app.use(function (app) {
     app.bar = 555
   })
 
@@ -102,8 +103,21 @@ test('should register/call/invoke named plugins only once', function (done) {
 
 test('should always pass options object to plugin, empty object if not passed', function (done) {
   app.use(function (app, options) {
+    test.strictEqual(this, null)
     test.strictEqual(typeof options, 'object')
     test.strictEqual(Object.keys(options).length, 0)
     done()
   })
+})
+
+test('should work for Base apps', function (done) {
+  var base = new Base()
+
+  base.on('error', done)
+  base.use(betterUse())
+
+  base.use(function (app, base, options) {
+    test.deepEqual(options, { foo: 'bar' })
+    done()
+  }, { foo: 'bar' })
 })

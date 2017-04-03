@@ -43,7 +43,7 @@ module.exports = function betterUse (opts) {
       return
     }
 
-    var oldUse = app.use
+    // var oldUse = app.use
 
     /**
      * > Calls `fn` plugin immediately once, if `name` is string
@@ -100,13 +100,9 @@ module.exports = function betterUse (opts) {
         app.emit('error', new TypeError('.use: expect at least one argument function'))
         return app
       }
-      if (typeof name === 'string') {
-        fn = handleNamedPlugin(oldUse)(name, fn)
-        fn._pluginName = name
-      }
       options = isObject(options) ? options : {}
 
-      handleAnonymousPlugin(app, oldUse, [fn, options])
+      invoker(app)(name, fn, options)
       return app
     }
 
@@ -118,24 +114,21 @@ module.exports = function betterUse (opts) {
  * Utils
  */
 
-function handleAnonymousPlugin (app, func, args) {
-  var ret = tryCatch(func, { args: args, return: true })
+function invoker (app) {
+  return function invoker__ (name, fn, options) {
+    if (app.isRegistered(name)) {
+      return
+    }
 
-  if (ret instanceof Error) {
-    ret._pluginName = args[0]._pluginName
-    app.emit('error', ret)
-  }
-}
+    var ret = tryCatch(fn, {
+      return: true,
+      context: app.isBase ? app : null,
+      args: app.isBase ? [app, app.base, options, app.env] : [app, options]
+    })
 
-function handleNamedPlugin (oldUse) {
-  return function __createdPlugin__ (name, fn) {
-    return function createdPlugin (app, options) {
-      if (app.isRegistered(name)) {
-        return
-      }
-
-      oldUse(fn, options)
-      return app
+    if (ret instanceof Error) {
+      ret._pluginName = name
+      app.emit('error', ret)
     }
   }
 }
